@@ -1,0 +1,28 @@
+{
+  "name": "wlist",
+  "version": "1.0.0",
+  "description": "wish list organizer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"A Place to Create a wish List for the family\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scodingjs/wlist.git"
+  },
+  "keywords": [
+    "MySql",
+    "express",
+    "handlebars",
+    "orm"
+  ],
+  "author": "sangeetha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scodingjs/wlist/issues"
+  },
+  "homepage": "https://github.com/scodingjs/wlist#readme",
+  "dependencies": {
+    "mysql": "^2.15.0"
+  }
+}
