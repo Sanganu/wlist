@@ -9,6 +9,7 @@ CREATE TABLE  userlogin
     fname VARCHAR(50) NOT NULL,
     lname VARCHAR(50)NOT NULL,
     email VARCHAR(35) NOT NULL,
+    pword VARCHAR(10) NOT NULL,
     PRIMARY KEY(id));
 
 ALTER TABLE userlogin AUTO_INCREMENT = 1000;
