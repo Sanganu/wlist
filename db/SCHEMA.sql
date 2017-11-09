@@ -14,6 +14,8 @@ CREATE TABLE  userlogin
 
 ALTER TABLE userlogin AUTO_INCREMENT = 1000;
 
+ALTER TABLE userlogin ADD CONSTRAINT UNIQUE(EMAIL);
+
 CREATE TABLE groups
 ( id INT NOT NULL AUTO_INCREMENT,
   group_name VARCHAR(35) NOT NULL,
@@ -42,6 +44,16 @@ CREATE TABLE usergroupproducts
     product_price FLOAT,
     PRIMARY KEY(id),
     FOREIGN KEY(usergrp_id) REFERENCES useringroup(id));
+
+CREATE TABLE wishlist
+( id INT NOT NULL AUTO_INCREMENT,
+   userid INT NOT NULL,
+   product_name varchar(20) NOT NULL,
+   product_desc VARCHAR(50) NOT NULL,
+   product_price FLOAT,
+   PRIMARY KEY(id),
+   FOREIGN KEY(userid) REFERENCES userlogin(id));
+   
 
 ALTER TABLE usergroupproducts AUTO_INCREMENT = 15000;
 

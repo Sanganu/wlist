@@ -73,8 +73,16 @@ values
 (10001,10,'Apple Watch',700);
 
 select * from useringroup;
+
 select * from usergroupproducts;
 
+select * from userlogin;
 
+select * from groups;
+
+insert into wishlist(userid ,
+   product_desc ,
+   product_price) values (1000,'Apple',1000);
+   
 
 

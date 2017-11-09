@@ -28,12 +28,12 @@ var user = {
            orm.delete("userlogin", condition, function(res) {
              console.log('User login delete',res);
              cb(res);
-
            });
       },
-      selectone:function(condition, cb)
+      selectone:function(objColVals, cb)
       {
-        orm.selectone("userlogin",condition,function(res)
+         console.log("before orm.");
+        orm.selectone("userlogin",objColVals,function(res)
         {
           console.log('User login table',res);
           cb(res);

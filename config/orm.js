@@ -25,11 +25,50 @@ function objToSql(ob) {
             {
               value = "'"+value+"'" ;
             }
+            else if (typeof value === 'date')
+            {
+              value = "'"+value+"'";
+            }
             arr.push(key + "=" + value);
             console.log(' The value is : ',value );
           }
         }
   return arr.toString();
+}
+
+function whereclause(ob)
+{
+        console.log('The object whereclause gets',ob);
+        var condstr = [];
+        var count = 0;
+        for (var key in ob) {
+              var value = ob[key];
+              console.log('Value is:',value,'Key is',key);
+              count++;
+              if ( count > 1)
+              {
+                 condstr =  condstr + " " + "AND" +" ";
+              }
+              if (Object.hasOwnProperty.call(ob, key)) {
+
+                    if (typeof value === "string" && value.indexOf(" ") >= 0) {
+                      value = "'" + value + "'";
+
+                    }
+                    else if (typeof value === "string")
+                    {
+                      value = "'"+value+"'" ;
+                    }
+                    else if (typeof value === 'date')
+                    {
+                      value = "'"+value+"'";
+                    }
+                    condstr = condstr + (key + "=" + value);
+                    console.log(' The value is : ',value );
+               } // end if object
+        } // end for
+      console.log("The  where clause: ",condstr);
+      return condstr;
 }
 // Object for all our SQL statement functions.
 var orm = {
@@ -93,11 +132,12 @@ var orm = {
             cb(result);
           });
     },
-    selectone: function(table,condition,cb)
+    selectone: function(table,objColVals,cb)
      {
+          console.log('The object input in selectone',objColVals);
            var queryString = "SELECT * FROM " + table;
-           queryString  += "WHERE ";
-           queryString += condition ;
+           queryString  += " WHERE ";
+           queryString += whereclause(objColVals) ;
            console.log('select one ',queryString);
            connection.query(queryString, function(err,result){
              if (err) throw(err);

@@ -1,67 +1,127 @@
 $(function() {
-     //$("#myaccount").hide();
-     //$("#htdivnewuserlogin").hide();
-     console.log('in ulogin');
-  /*   $("#createlogin").on("click",function(event)
-      {
-        event.preventDefault();
-        //$("htdivnewuserlogin").show();
-      });
-*/
+
      $("#htnewuser").on("click",function(){
         // Check whether email already used
           event.preventDefault();
-        console.log("In create account ");
-        var validinput = checkinput();
-
-              if (validinput )
-              {
-                var email = $("#htemail").val().trim();
-                event.preventDefault();
-                console.log('check email exist');
-
-                $.ajax("/api/users/check/"+email,{
-                  type : "GET"
-                }).then(function(response)
-                   {
-                     if (response.status === 404)
-                     {
-                       console.log("User Account with this Email-Id already Exist");
-                       acexist();
-                     }
-                     else if(response.status === 200)
-                     {
-                         var newuser = {
-                           fname : $("#htuser_fname").val().trim(),
-                           lname : $("#htuser_lname").val().trim(),
-                           email: $("#htemail").val().trim(),
-                           pword : $("#htconfirmpassword").val().trim()
-                         };
-                         $.ajax("/api/users/add",
-                           {
-                             type: "POST",
-                             data : newuser
-                           }).then(
-                                function()
-                                {
-                                  $("#myaccount").show();
-                                }
-                           ); //end ajax add
-                       } //end of else if 200
-                    }); //end of ajax email already exist
-                } //end of if pwd
+        //console.log("In create account ");
+                    var email = $("#htemail").val().trim();
+                    event.preventDefault();
+                    //createaccount();
+                    //console.log('check email exist');
+                    checkalreadyexist(email);
         });   // end of on click
-}); // end of function
+        $("#htlogin").on("click",function(event)
+        {
+             event.preventDefault() ;
 
+             var  email = $("#htsemail").val().trim();
+             var  pword =  $("#htspwd").val().trim();
+
+             console.log("inside ht login",email);
+             $.ajax("/api/users/login/"+email+"/"+pword,
+                    {
+                      type : "GET",
+
+                    }).then(function(response)
+                         {
+                                console.log(" inside promise");
+                               if (response.status === 404)
+                               {   console.log("Errror");
+                                }
+                                else {
+                                  console.log("Ok succesfull login");
+                                  console.log("Res",response);
+                                  window.location = '/users/myaccount/' + response.id;
+                                  /*
+                                  $.ajax("users/myaccount",
+                                          {type:"GET"}).then(function()
+                                          {
+
+                                          }
+                                        );
+                                   */
+                                }
+
+                         } // end of function (promise)
+                    ); // end of promise
+        }); // end on click;
+}); // end of main function
+
+$("#prodaddbtn").on("click",function(event)
+{
+      console.log("jquery add");
+       event.preventDefault();
+       var newitem = {
+         userid : $("#htdispid").val().trim(),
+         product_name: $("#htprodname").val().trim(),
+         product_desc: $("#htproddesc").val().trim(),
+         product_price : $("#htprodprice").val().trim()
+       };
+       // Send the POST request.
+       console.log('before ajax');
+       $.ajax("/api/users/wishlist/add", {
+         type : "POST",
+         data: newitem
+       }).then(
+         function() {
+           console.log("sending Inserted menu item");
+           // Reload the page to get the updated list
+           location.reload();
+         }
+       );
+});
+
+$(".updbtn").on("click",function(event)
+{
+            console.log("jquery del");
+          var id = $(this).data("id");
+          console.log('update in front end jquery id is',id);
+          var newwish =
+          {
+            pname: "i",
+            pdesc: "ss",
+            pprice: "23",
+            uid: "1000",
+
+          }
+          console.log('before ajax');
+          $.ajax("/api/users/wishlist/" + id, {
+            type: "PUT",
+            date : newwish
+          }).then(
+            function() {
+              console.log("sending update item request", id);
+              location.reload();
+            });
+
+
+
+});
+
+$(".delbtn").on("click",function(event)
+{
+        console.log("jquery del");
+      var id = $(this).data("id");
+      console.log('delete in front end jquery id is',id);
+
+      console.log('before ajax');
+      $.ajax("/api/users/wishlist/" + id, {
+        type: "DELETE",
+      }).then(
+        function() {
+          console.log("sending deleted  request", id);
+
+          location.reload();
+        }); // end of ajax
+
+
+}); //end delete button
 
 function acexist()
 {
-    $("#htuser_lname").val() = "";
-    $("#htuser_fname").val() = "";
-    $("#htemail").val() = "";
-    $("#htpassword").val() = "";
-    $("#htconfirmpassword").val() = "";
-    $("#ht-yesnoemail").text("Account already exist for this Email Id!!!");
+  console.log("acexist");
+    //location.reload();
+    $("#ht-yesnoemail").text ="Account already exist for this Email Id. Please Enter New details!!!";
 }
 
 function checkpassword()
@@ -116,7 +176,7 @@ function checkinput()
       $("#ht-yesnopwd2").text("Required field");
       rightone = false;
     }
-    if ( checkpassword)
+    if ( checkpassword())
     {
       console.log("Input -Checking password");
     }
@@ -125,3 +185,98 @@ function checkinput()
     }
     return rightone;
 }
+
+function checkalreadyexist(email)
+{
+  console.log( "ajax for check on email");
+  $.ajax("/api/users/check/"+email,{
+    type : "GET"
+  }).then(function(response)
+     {
+            console.log('Ajax response for emial check',response);
+             if (response.exist === "no")
+             {
+                if (checkinput())
+                {
+                  createaccount();
+                }
+                else {
+                  acexist();
+                }
+             }
+             else if(response.exist=== 'yes')
+             {
+               console.log("User Account with this Email-Id already Exist");
+               acexist();
+           }
+      });
+    //  return false;
+}
+
+function createaccount()
+{
+        var newuser = {
+          fname : $("#htuser_fname").val().trim(),
+          lname : $("#htuser_lname").val().trim(),
+          email: $("#htemail").val().trim(),
+          pword : $("#htconfirmpassword").val().trim()
+        };
+        $.ajax("/api/users/add",
+          {
+            type: "POST",
+            data : newuser
+          }).then(
+               function(response)
+               {
+
+                 console.log("Inserted Records",response.id);
+                 var id = response.id;
+                 /*
+                 $.ajax("/users/myaccount/"+id,
+                         {type:"GET"}).then(function()
+                         {
+                            console.log("Account created - Mydashboard Page");
+                         }
+                       ); */
+                       window.location = '/users/myaccount/' + response.id;
+               }
+          ); //end ajax add
+
+}
+
+/*
+$("#htlogin").on("click",function(event)
+{
+     event.preventDefault ;
+
+     var usercred = {
+       email : $("#htsemail").val().trim(),
+       pword :  $("#htspwd").val().trim()
+     };
+     console.log("inside ht login",usercred);
+     $.ajax("/api/users/login",
+            {
+              type : "POST",
+              data : usercred
+            }).then(function(response)
+                 {
+                        console.log(" inside promise");
+                       if (response.status === 404)
+                       {   console.log("Errror");
+                        }
+                        else {
+                          console.log("Ok succesfull login");
+                          /*
+                          $.ajax("users/myaccount",
+                                  {type:"GET"}).then(function()
+                                  {
+
+                                  }
+                                );
+
+                        }
+
+                 } // end of function (promise)
+            ); // end of promise
+}); // end on click;
+*/
