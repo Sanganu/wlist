@@ -1,3 +1,9 @@
+DROP DATABASE  IF EXISTS wishlistdb;
+
+CREATE DATABASE wishlistdb;
+
+USE wishlistdb;
+
 DROP DATABASE  IF EXISTS wishlist;
 
 CREATE DATABASE wishlist;
@@ -45,6 +51,8 @@ CREATE TABLE usergroupproducts
     PRIMARY KEY(id),
     FOREIGN KEY(usergrp_id) REFERENCES useringroup(id));
 
+ALTER TABLE usergroupproducts AUTO_INCREMENT = 15000;
+
 CREATE TABLE wishlist
 ( id INT NOT NULL AUTO_INCREMENT,
    userid INT NOT NULL,
@@ -55,7 +63,6 @@ CREATE TABLE wishlist
    FOREIGN KEY(userid) REFERENCES userlogin(id));
    
 
-ALTER TABLE usergroupproducts AUTO_INCREMENT = 15000;
 
 drop table  userlogin;
 drop table groups;

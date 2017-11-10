@@ -1,0 +1,11 @@
+.footer {
+  background-color: black;
+  height:20px;
+}
+
+.jumbotron {
+  background-color: black;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}

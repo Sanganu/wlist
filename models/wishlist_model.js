@@ -10,6 +10,7 @@ var wishes = {
         });     },
      create: function(cols,vals,cb)
      {
+        console.log("before orm",cols,vals);
         orm.create("wishlist",cols,vals,function(res)
          {
            console.log('wishlist create',res);
@@ -23,8 +24,8 @@ var wishes = {
               cb(res);
             });
      },
-     delete: function(condition, cb) {
-           orm.delete("wishlist", condition, function(res) {
+     delete: function(objCond, cb) {
+           orm.delete("wishlist", objCond, function(res) {
              console.log('wishlist table delete',res);
              cb(res);
            });

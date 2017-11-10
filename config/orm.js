@@ -119,10 +119,10 @@ var orm = {
             cb(result);
           });
   },
-  delete: function(table, condition, cb) {
+  delete: function(table, objCond, cb) {
           var queryString = "DELETE FROM " + table;
           queryString += " WHERE ";
-          queryString += condition;
+          queryString += whereclause(objCond);
           console.log('Delete from ORM',queryString);
           connection.query(queryString, function(err, result) {
             if (err) {
@@ -145,5 +145,5 @@ var orm = {
            });
      }
 }
-// Export the orm object for the model (userlogin_model.js).
+// Export the orm object for the model (userlogin_model.js & wishlist_model).
 module.exports = orm;

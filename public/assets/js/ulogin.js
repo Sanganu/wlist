@@ -1,24 +1,25 @@
 $(function() {
 
-     $("#htnewuser").on("click",function(){
-        // Check whether email already used
-          event.preventDefault();
-        //console.log("In create account ");
+
+        $("#htnewuser").on("click",function(){
+                   // Check whether email already used
+                    event.preventDefault();
                     var email = $("#htemail").val().trim();
                     event.preventDefault();
                     //createaccount();
                     //console.log('check email exist');
                     checkalreadyexist(email);
         });   // end of on click
+
         $("#htlogin").on("click",function(event)
         {
-             event.preventDefault() ;
+                     event.preventDefault() ;
+                     $("#ht-message").text("");
+                     var  email = $("#htsemail").val().trim();
+                     var  pword =  $("#htspwd").val().trim();
 
-             var  email = $("#htsemail").val().trim();
-             var  pword =  $("#htspwd").val().trim();
-
-             console.log("inside ht login",email);
-             $.ajax("/api/users/login/"+email+"/"+pword,
+                     console.log("inside ht login",email);
+                     $.ajax("/api/users/login/"+email+"/"+pword,
                     {
                       type : "GET",
 
@@ -32,97 +33,92 @@ $(function() {
                                   console.log("Ok succesfull login");
                                   console.log("Res",response);
                                   window.location = '/users/myaccount/' + response.id;
-                                  /*
-                                  $.ajax("users/myaccount",
-                                          {type:"GET"}).then(function()
-                                          {
-
-                                          }
-                                        );
-                                   */
                                 }
 
                          } // end of function (promise)
                     ); // end of promise
-        }); // end on click;
-}); // end of main function
+          }); // end on click;
 
-$("#prodaddbtn").on("click",function(event)
-{
-      console.log("jquery add");
-       event.preventDefault();
-       var newitem = {
-         userid : $("#htdispid").val().trim(),
-         product_name: $("#htprodname").val().trim(),
-         product_desc: $("#htproddesc").val().trim(),
-         product_price : $("#htprodprice").val().trim()
-       };
-       // Send the POST request.
-       console.log('before ajax');
-       $.ajax("/api/users/wishlist/add", {
-         type : "POST",
-         data: newitem
-       }).then(
-         function() {
-           console.log("sending Inserted menu item");
-           // Reload the page to get the updated list
-           location.reload();
-         }
-       );
-});
-
-$(".updbtn").on("click",function(event)
-{
-            console.log("jquery del");
-          var id = $(this).data("id");
-          console.log('update in front end jquery id is',id);
-          var newwish =
-          {
-            pname: "i",
-            pdesc: "ss",
-            pprice: "23",
-            uid: "1000",
-
-          }
-          console.log('before ajax');
-          $.ajax("/api/users/wishlist/" + id, {
-            type: "PUT",
-            date : newwish
-          }).then(
-            function() {
-              console.log("sending update item request", id);
-              location.reload();
+            $("#prodaddbtn").on("click",function(event)
+            {
+                  console.log("jquery product add button");
+                   event.preventDefault();
+                   var uid = parseInt($("#htdispid").val().trim());
+                   var price = parseFloat($("#htprodprice").val().trim());
+                   var newitem = {
+                     userid : uid,
+                     product_name: $("#htprodname").val().trim(),
+                     product_desc: $("#htproddesc").val().trim(),
+                     product_price : price
+                   };
+                   // Send the POST request.
+                   console.log('before ajax of inserting product',newitem);
+                   $.ajax("/api/users/wishlist/add", {
+                     type : "POST",
+                     data: newitem
+                   }).then(function(response) {
+                       console.log("Ajax Response -Added Item",response);
+                       // Reload the page to get the updated list
+                       location.reload();
+                     }
+                   );
             });
 
+            $(".updbtn").on("click",function(event)
+            {
+                     event.preventDefault();
+                      console.log("jquery update product button");
+                      var id = $(this).data("id");
+                    //  var htele = $(this).closest('form');
+                      var input1 = $(`#prdname${id}`).val();
+                    var htele = $(this).parent().parent();
+                      console.log('update in front end jquery id is',htele);
+                      console.log('product name',input1);
+                      //console.log('updt',`${id}prdname`,`${id}prddesc ${id}prdprice`);
+                      var newwish =
+                      {
+                        pname: 'update',
+                        pdesc: 'update',
+                        pprice:12,
+                        uid: $("#htdispid").val().trim(),
+                      }
+                      console.log('before ajax',newwish);
+                      $.ajax("/api/users/wishlist/update/" + id, {
+                        type: "PUT",
+                        data : newwish
+                      }).then(
+                        function(response) {
+                          console.log("Update of Products", response);
+                          location.reload();
+                        });
+
+            });
+
+          $(".delbtn").on("click",function(event)
+          {
+                console.log("jquery del");
+                event.preventDefault();
+                var id = $(this).data("id");
+                console.log('delete in front end jquery id is',id);
+                var paraObj = {
+                    id :id,
+                    userid:$("#htdispid").val().trim()
+                }
+                console.log('before ajax',paraObj);
+                $.ajax("/api/users/wishlist/delete/", {
+                  type: "DELETE",
+                  data : paraObj
+                }).then(
+                  function(response) {
+                    console.log("sending deleted  request", response);
+                    location.reload();
+                  }); // end of ajax
 
 
-});
-
-$(".delbtn").on("click",function(event)
-{
-        console.log("jquery del");
-      var id = $(this).data("id");
-      console.log('delete in front end jquery id is',id);
-
-      console.log('before ajax');
-      $.ajax("/api/users/wishlist/" + id, {
-        type: "DELETE",
-      }).then(
-        function() {
-          console.log("sending deleted  request", id);
-
-          location.reload();
-        }); // end of ajax
+          }); //end delete button
+}); // end of main function
 
 
-}); //end delete button
-
-function acexist()
-{
-  console.log("acexist");
-    //location.reload();
-    $("#ht-yesnoemail").text ="Account already exist for this Email Id. Please Enter New details!!!";
-}
 
 function checkpassword()
 {
@@ -198,16 +194,17 @@ function checkalreadyexist(email)
              {
                 if (checkinput())
                 {
+                  checkpassword();
                   createaccount();
                 }
                 else {
-                  acexist();
+                  $("#ht-message").text("Please Enter all details!!!");
                 }
              }
              else if(response.exist=== 'yes')
              {
                console.log("User Account with this Email-Id already Exist");
-               acexist();
+               $("#ht-message").text("Account already exist for this Email Id. Please Enter New details!!!");
            }
       });
     //  return false;
@@ -231,52 +228,7 @@ function createaccount()
 
                  console.log("Inserted Records",response.id);
                  var id = response.id;
-                 /*
-                 $.ajax("/users/myaccount/"+id,
-                         {type:"GET"}).then(function()
-                         {
-                            console.log("Account created - Mydashboard Page");
-                         }
-                       ); */
-                       window.location = '/users/myaccount/' + response.id;
+                 window.location = '/users/myaccount/' + response.id;
                }
           ); //end ajax add
-
 }
-
-/*
-$("#htlogin").on("click",function(event)
-{
-     event.preventDefault ;
-
-     var usercred = {
-       email : $("#htsemail").val().trim(),
-       pword :  $("#htspwd").val().trim()
-     };
-     console.log("inside ht login",usercred);
-     $.ajax("/api/users/login",
-            {
-              type : "POST",
-              data : usercred
-            }).then(function(response)
-                 {
-                        console.log(" inside promise");
-                       if (response.status === 404)
-                       {   console.log("Errror");
-                        }
-                        else {
-                          console.log("Ok succesfull login");
-                          /*
-                          $.ajax("users/myaccount",
-                                  {type:"GET"}).then(function()
-                                  {
-
-                                  }
-                                );
-
-                        }
-
-                 } // end of function (promise)
-            ); // end of promise
-}); // end on click;
-*/
