@@ -8,24 +8,26 @@
     {{/each}}
 </div>
 <div class = "container">
-      <button><a href = "/">Return to Home Page</a></button>
+      <button><a href = "/">Sign Out</a></button>
 </div>
 <div> My Wish List</div>
 <div id = "mywishlist">
   {{#each wlist}}
             <div class = "row">
+                  <!--
                     <div class = "col-lg-1">
                          <p>{{this.id}}</p>
-                    </div>
+                    </div> -->
                     <form>
                           <div class = "col-lg-3">
-                              <input id = `prdname{{this.id}}`  type = "text" placeholder ="{{this.product_name}}">
+                              <input id="prdname-{{this.id}}" name="prdname-{{this.id}}" type="text" value="{{this.product_name}}" placeholder="{{this.product_name}}" />
+
                           </div>
                           <div class = "col-lg-3">
-                              <input id = `prddesc{{this.id}}` type ="text" placeholder="{{this.product_desc}}">
+                              <input id = "prddesc-{{this.id}}"  name = "prddesc-{{this.id}}" type ="text" value = "{{this.product_desc}}" placeholder="{{this.product_desc}}" />
                           </div>
                           <div class = "col-lg-2">
-                              <input id = `prdprice{{this.id}}` type ="text" placeholder="{{this.product_price}}">
+                              <input id = "prdprice-{{this.id}}"  name = "prdprice-{{this.id}}" type ="text" value = "{{this.product_price}}" placeholder="{{this.product_price}}"/>
                           </div>
                           <div class = "col-lg-2">
                               <button data-id ="{{this.id}}" class ="updbtn btn btn-info">Update List</button>

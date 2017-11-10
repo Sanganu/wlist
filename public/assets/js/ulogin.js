@@ -44,11 +44,11 @@ $(function() {
                   console.log("jquery product add button");
                    event.preventDefault();
                    var uid = parseInt($("#htdispid").val().trim());
-                   var price = parseFloat($("#htprodprice").val().trim());
+                   var price = parseFloat($("#htprodprice").val().trim()) || 000;
                    var newitem = {
                      userid : uid,
-                     product_name: $("#htprodname").val().trim(),
-                     product_desc: $("#htproddesc").val().trim(),
+                     product_name: $("#htprodname").val().trim() || 'Product name',
+                     product_desc: $("#htproddesc").val().trim() || 'Product description',
                      product_price : price
                    };
                    // Send the POST request.
@@ -70,16 +70,17 @@ $(function() {
                       console.log("jquery update product button");
                       var id = $(this).data("id");
                     //  var htele = $(this).closest('form');
-                      var input1 = $(`#prdname${id}`).val();
-                    var htele = $(this).parent().parent();
-                      console.log('update in front end jquery id is',htele);
-                      console.log('product name',input1);
-                      //console.log('updt',`${id}prdname`,`${id}prddesc ${id}prdprice`);
+                    // var input = htele.find("#prdname").val();
+                      var input1 = $(`#prddesc-${id}`).val().trim();
+                      var input2 = $(`#prdname-${id}`).val().trim();
+                      var input3 = $(`#prdprice-${id}`).val().trim();
+                     var htele = $(this).parent().parent();
+                    console.log('product name'+input1+':2:',input2);                     //console.log('updt',`${id}prdname`,`${id}prddesc ${id}prdprice`);
                       var newwish =
                       {
-                        pname: 'update',
-                        pdesc: 'update',
-                        pprice:12,
+                        pname: input2,
+                        pdesc: input1,
+                        pprice:parseFloat(input3),
                         uid: $("#htdispid").val().trim(),
                       }
                       console.log('before ajax',newwish);
@@ -231,4 +232,12 @@ function createaccount()
                  window.location = '/users/myaccount/' + response.id;
                }
           ); //end ajax add
+}
+
+function checkwishlistinput()
+{
+  var price = parseFloat($("#htprodprice").val().trim());
+  var product_name = $("#htprodname").val().trim();
+  var  product_desc = $("#htproddesc").val().trim();
+
 }
