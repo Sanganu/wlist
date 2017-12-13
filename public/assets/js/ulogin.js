@@ -17,26 +17,31 @@ $(function() {
                      $("#ht-message").text("");
                      var  email = $("#htsemail").val().trim();
                      var  pword =  $("#htspwd").val().trim();
+                     if( email != "" && pword != "")
+                     {
+                           console.log("inside ht login",email);
+                           $.ajax("/api/users/login/"+email+"/"+pword,
+                          {
+                            type : "GET",
 
-                     console.log("inside ht login",email);
-                     $.ajax("/api/users/login/"+email+"/"+pword,
-                    {
-                      type : "GET",
-
-                    }).then(function(response)
-                         {
-                                console.log(" inside promise");
-                               if (response.status === 404)
-                               {   console.log("Errror");
-                                }
-                                else {
-                                  console.log("Ok succesfull login");
-                                  console.log("Res",response);
-                                  window.location = '/users/myaccount/' + response.id;
-                                }
-
-                         } // end of function (promise)
-                    ); // end of promise
+                          }).then(function(response)
+                               {
+                                      console.log(" inside promise");
+                                     if (response.id === "none")
+                                     {   console.log("Errror");
+                                        $("#lgmsg").text("Invalid Password!! Retry!");
+                                      }
+                                      else {
+                                        console.log("Ok succesfull login");
+                                        console.log("Res",response);
+                                        window.location = '/users/myaccount/' + response.id;
+                                      }
+                               } // end of function (promise)
+                          ); // end of promise
+                      }
+                      else {
+                          $("#lgmsg").text("Please enter in all fields");
+                      }
           }); // end on click;
 
             $("#prodaddbtn").on("click",function(event)
@@ -131,9 +136,9 @@ function checkpassword()
       return true;
     }
     else {
-      $("#htpassword").val() = "";
-      $("#htconfirmpassword").val() = "";
-      $("#ht-yesnopwd").text("Password mismatch");
+    /*  $("#htpassword").val() = "";
+      $("#htconfirmpassword").val() = ""; */
+      $("#ht-message").text("Password mismatch");
       return false;
     }
 }
@@ -173,13 +178,13 @@ function checkinput()
       $("#ht-yesnopwd2").text("Required field");
       rightone = false;
     }
-    if ( checkpassword())
+  /*  if ( checkpassword())
     {
       console.log("Input -Checking password");
     }
     else {
       rightone = false;
-    }
+    }*/
     return rightone;
 }
 
@@ -193,13 +198,17 @@ function checkalreadyexist(email)
             console.log('Ajax response for emial check',response);
              if (response.exist === "no")
              {
-                if (checkinput())
+                if (checkinput() && checkpassword())
                 {
-                  checkpassword();
-                  createaccount();
+                    createaccount();
                 }
-                else {
+                else if ( ! checkinput())
+                {
                   $("#ht-message").text("Please Enter all details!!!");
+                }
+                else if ( ! checkpassword())
+                {
+                  $("ht-message").text("Password mismatch");
                 }
              }
              else if(response.exist=== 'yes')

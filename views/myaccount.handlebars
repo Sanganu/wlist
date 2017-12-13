@@ -1,58 +1,52 @@
-<h3>Account Details</h3>
-<div id = "myacdet">
+
+<div id = "myacdet" class = "container">
     {{#each ulist}}
-
-        <p><label id = "name">{{this.fname}} {{this.lname}}"></label></p>
-        <p><input id = "htdispid" type = "hidden" value = {{this.id}}><p>
-        <p><label>{{this.email}}</label></p>
+       <div class = "row">
+           <div class ="col s6">
+               <h4 id = "name">{{this.fname}} {{this.lname}}</h4>
+          </div>
+           <div class ="col s6">
+                 <h4>{{this.email}}</h4>
+           </div>
+            <input id = "htdispid" type = "hidden" value = "{{this.id}}">
+       </div>
     {{/each}}
 </div>
 <div class = "container">
-      <button><a href = "/">Sign Out</a></button>
-</div>
-<div> My Wish List</div>
-<div id = "mywishlist">
-  {{#each wlist}}
-            <div class = "row">
-                  <!--
-                    <div class = "col-lg-1">
-                         <p>{{this.id}}</p>
-                    </div> -->
-                    <form>
-                          <div class = "col-lg-3">
-                              <input id="prdname-{{this.id}}" name="prdname-{{this.id}}" type="text" value="{{this.product_name}}" placeholder="{{this.product_name}}" />
-
-                          </div>
-                          <div class = "col-lg-3">
-                              <input id = "prddesc-{{this.id}}"  name = "prddesc-{{this.id}}" type ="text" value = "{{this.product_desc}}" placeholder="{{this.product_desc}}" />
-                          </div>
-                          <div class = "col-lg-2">
-                              <input id = "prdprice-{{this.id}}"  name = "prdprice-{{this.id}}" type ="text" value = "{{this.product_price}}" placeholder="{{this.product_price}}"/>
-                          </div>
-                          <div class = "col-lg-2">
-                              <button data-id ="{{this.id}}" class ="updbtn btn btn-info">Update List</button>
-                          </div>
-                          <div class = "col-lg-2">
-                              <button data-id ="{{this.id}}" class ="delbtn btn btn-danger">Delete Item</button>
-                          </div>
-                  </form>
-            </div>
-    {{/each}}
-
+            <h5>Wish List</h5>
+            <table id = "mywishlist" class = "stripped responsive-table">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Description</th>
+                        <th>Product Price</th>
+                    </tr>
+                  {{#each wlist}}
+                            <tr>
+                                    <form>
+                                          <td><input id="prdname-{{this.id}}" name="prdname-{{this.id}}" type="text" value="{{this.product_name}}" placeholder="{{this.product_name}}" class="materialize-textarea flow-text" /></td>
+                                          <td><input id = "prddesc-{{this.id}}"  name = "prddesc-{{this.id}}" type ="text" value = "{{this.product_desc}}" placeholder="{{this.product_desc}}" class="materialize-textarea flow-text" /></td>
+                                          <td><input id = "prdprice-{{this.id}}"  name = "prdprice-{{this.id}}" type ="text" value = "{{this.product_price}}" placeholder="{{this.product_price}}" class="materialize-textarea flow-text"/></td>
+                                          <td><button data-id ="{{this.id}}" class ="updbtn btn btn-info">Update</button></td>
+                                          <td><button data-id ="{{this.id}}" class ="delbtn btn btn-danger">Delete</button></td>
+                                     </form>
+                            </tr>
+                    {{/each}}
+            </table>
 </div>
 <div class = "container">
-              <h4>Add Wish List Details</h4>
+              <h5>Add Products </h5>
               <div class = "row">
                     <form class = "create-form">
                          <div class = "form-group">
-                                 <label>Product Name :</label>
-                                 <input id = "htprodname" type = "text" placeholder = "Product Name" name = "htsubname">
-                                 <label>Enter Description :</label>
-                                  <input id = "htproddesc" type = "text" placeholder = "Product Description" name = "hthwdesc">
-                                  <label>Enter Price:</label>
-                                   <input id = "htprodprice" type = "text" placeholder = "Enter Price" name = "hthwdesc">
-                                  <button id ="prodaddbtn" class = "btn btn-success" type = "submit">Add to wish list</button>
+                                 <input id = "htprodname" type = "text" class="materialize-textarea" placeholder = "Product Name" name = "htsubname">
+                                 <input id = "htproddesc" type = "text" class="materialize-textarea" placeholder = "Product Description" name = "hthwdesc">
+                                 <input id = "htprodprice" type = "text" class="materialize-textarea" placeholder = "Enter Price" name = "hthwdesc">
+                                <button id ="prodaddbtn" class = "btn btn-success" type = "submit">Add to list <i class="material-icons right"></i></button>
                          </div>
                     </form>
               </div>
 </div>
+<!--
+<div class = "container">
+      <button><a href = "/">Sign Out</a></button>
+</div> -->
